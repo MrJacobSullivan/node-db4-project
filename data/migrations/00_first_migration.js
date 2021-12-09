@@ -7,15 +7,7 @@ const up = async (knex) => {
     .createTable('steps', (table) => {
       table.increments('step_id')
       table.integer('step_number').unsigned().notNullable()
-      table.string('instructions', 512).notNullable()
-    })
-    .createTable('ingredients', (table) => {
-      table.increments('ingredient_id')
-      table.string('ingredient_name', 256).notNullable()
-    })
-    .createTable('step_ingredients', (table) => {
-      table.increments('step_ingredients_id')
-      table.integer('quantity').unsigned().notNullable()
+      table.string('step_instructions', 512).notNullable()
       table
         .integer('recipe_id')
         .unsigned()
@@ -24,6 +16,14 @@ const up = async (knex) => {
         .inTable('recipes')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT')
+    })
+    .createTable('ingredients', (table) => {
+      table.increments('ingredient_id')
+      table.string('ingredient_name', 256).notNullable()
+    })
+    .createTable('step_ingredients', (table) => {
+      table.increments('step_ingredients_id')
+      table.integer('quantity').unsigned().notNullable()
       table
         .integer('step_id')
         .unsigned()
