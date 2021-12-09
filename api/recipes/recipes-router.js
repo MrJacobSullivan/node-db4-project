@@ -1,6 +1,8 @@
 const express = require('express')
 const Recipes = require('./recipes-model')
 
+const { validateRecipeId } = require('./recipes-middleware')
+
 // base - /api/recipes
 const router = express.Router()
 
@@ -51,11 +53,11 @@ router.get('/', async (req, res, next) => {
   ],
 }
 */
-router.get('/:recipe_id', async (req, res, next) => {
+router.get('/:recipe_id', validateRecipeId, async (req, res, next) => {
   const { recipe_id } = req.params
 
   try {
-    const recipe = await Recipes.getRecipeById(recipe_id)
+    const recipe = await Recipes.getFullRecipeById(recipe_id)
     res.json(recipe)
   } catch (err) {
     next(err)

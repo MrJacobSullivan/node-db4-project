@@ -1,7 +1,12 @@
 const db = require('../../data/db-config')
 
 const getAllRecipes = async () => {
-  return await db('recipes').select('*')
+  return await db('recipes')
+}
+
+const getRecipeById = async (recipe_id) => {
+  const [recipe] = await db('recipes as r').where('r.recipe_id', recipe_id)
+  return recipe
 }
 
 const getIngredients = async (step_id) => {
@@ -12,7 +17,7 @@ const getIngredients = async (step_id) => {
   return ingredients
 }
 
-const getRecipeById = async (recipe_id) => {
+const getFullRecipeById = async (recipe_id) => {
   const rows = await db('recipes as r')
     .join('steps as s', 'r.recipe_id', 's.recipe_id')
     .where('r.recipe_id', recipe_id)
@@ -52,4 +57,5 @@ const getRecipeById = async (recipe_id) => {
 module.exports = {
   getAllRecipes,
   getRecipeById,
+  getFullRecipeById,
 }
