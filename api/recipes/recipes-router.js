@@ -9,11 +9,13 @@ const router = express.Router()
 [
   {
     "recipe_id": 1,
-    "recipe_name": "Scrambled Eggs"
+    "recipe_name": "Scrambled Eggs",
+    "step_count": 6
   },
   {
     "recipe_id": 2,
-    "recipe_name": "Scrambled Eggs"
+    "recipe_name": "Scrambled Eggs",
+    "step_count": 3
   },
 ]
 */
@@ -31,7 +33,7 @@ router.get('/', async (req, res, next) => {
 {
   "recipe_id": 1,
   "recipe_name": "Scrambled Eggs",
-  "steps": {
+  "steps": [
     {
       "step_id": 1,
       "step_number": 1,
@@ -46,8 +48,18 @@ router.get('/', async (req, res, next) => {
         { "ingredient_id": 1, "ingredient_name": "butter", "quantity": 1 }
       ]
     },
-  }
+  ],
 }
 */
+router.get('/:recipe_id', async (req, res, next) => {
+  const { recipe_id } = req.params
+
+  try {
+    const recipe = await Recipes.getRecipeById(recipe_id)
+    res.json(recipe)
+  } catch (err) {
+    next(err)
+  }
+})
 
 module.exports = router
